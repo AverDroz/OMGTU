@@ -1,85 +1,96 @@
 using System;
 using System.Collections.Generic;
 
-class Auditoriums // обьект Аудитории
+class Auditorium // обьект Аудитория
 {
-    class Auditorium // обьект Аудитория
-    {
-        public int Seats { get; set; } // Места
-        public int FloorNumber { get; set; } // Этаж
-        public int RoomNumber { get; set; } // Номер
-        /*
-         и остальные параметры
-        */
-    }
-    
-    private List<Auditorium> auditoriums; // список всех аудиторий
-    
-    public Auditoriums() // конструктор класса Auditoriums
-    {
-        auditoriums = new List<Auditorium>(); // инициализация списка аудиторий 
-    }
-    
-    public void AddAuditorium() // метод добавления
-    {
-        Auditorium newAuditorium = new Auditorium(); // новая аудитория
-        Console.Write("Введите количество мест: ");
-        newAuditorium.Seats = Convert.ToInt32(Console.ReadLine()); 
-        Console.Write("Введите номер этажа: ");
-        newAuditorium.FloorNumber = Convert.ToInt32(Console.ReadLine());
-        Console.Write("Введите номер аудитории: ");
-        newAuditorium.RoomNumber = Convert.ToInt32(Console.ReadLine());
-        
-        auditoriums.Add(newAuditorium); // добавляем аудиторию в список всех аудиторий
-        Console.WriteLine("Аудитория добавлена успешно.");
-    }
-    
-    public void ListAuditoriumsBySeats(int minSeats) // метод выборки по наличию мест
-    {
-        Console.WriteLine($"Список аудиторий с количеством мест больше-равно {minSeats}:");
-        foreach (var auditorium in auditoriums) // для каждой аудитории
-        {
-            if (auditorium.Seats >= minSeats) // проверяем условие
-            {
-                Console.WriteLine($"Этаж {auditorium.FloorNumber}, Аудитория {auditorium.RoomNumber}");
-            }
-        }
-    }
-     /*
-    и остальные необходимые методы
+    private int Seats { get; set; } // Места
+    private int FloorNumber { get; set; } // Этаж
+    private int RoomNumber { get; set; } // Номер
+    private int HasProjector { get; set; } // Проектор
+    /*
+     и остальные параметры
     */
+
+    public Auditorium(int seats, int floorNumber, int roomNumber, int hasProjector) // Конструктор класса Аудитория
+  {
+      Seats = seats;
+      FloorNumber = floorNumber;
+      RoomNumber = roomNumber;
+      HasProjector = hasProjector;
+  }
+
+  public void ShowInfo() // Метод вывода информации
+  {
+      Console.Write($" Количество мест: {Seats} |");
+      Console.Write($" Номер этажа: {FloorNumber} |");
+      Console.Write($" Номер кабинета: {RoomNumber} |");
+      Console.WriteLine($" Есть проектор: {HasProjector} |");
+  }
+
+  public bool IsHasProjector() // Медод проверки на наличие проектора
+  {
+    if(HasProjector == 1)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+  
+  /*
+   и остальные необходимые методы
+  */
 }
 
 class Menu // обьект Меню
 {
-    
+
     public Menu() // конструктор класса Menu
     {
-        
+
     }
-    
-    public void ShowMenu(Auditoriums Auds) // метод показать меню
+
+    public void ShowMenu(List<Auditorium> auditoriumList) // метод показать меню, принимающий список аудиторий
     {
+        int seats;
+        int floorNumber;
+        int roomNumber;
+        int hasProjector;
         int choice;
-        int minSeats;
-        
+
         while (true) // делать пока приблизительно всегда
         {
+            Console.WriteLine();
             Console.WriteLine("1. Добавить аудиторию");
-            Console.WriteLine("2. Список аудиторий с количеством мест больше-равно заданному");
+            Console.WriteLine("2. Список аудиторий с проектором");
             Console.Write("Выберите действие (1-2): ");
-            
+
             choice = Convert.ToInt32(Console.ReadLine()); // choice по английски выбор
 
             switch (choice)
             {
                 case 1:
-                    Auds.AddAuditorium();
+                    Console.Write("Введите количество мест: ");
+                    seats = Convert.ToInt32(Console.ReadLine()); 
+                    Console.Write("Введите номер этажа: ");
+                    floorNumber = Convert.ToInt32(Console.ReadLine());
+                    Console.Write("Введите номер аудитории: ");
+                    roomNumber = Convert.ToInt32(Console.ReadLine());
+                    Console.Write("Введите наличие проектора(1 - есть, 0 - нет): ");
+                    hasProjector = Convert.ToInt32(Console.ReadLine());
+                    Auditorium newAuditorium = new Auditorium(seats, floorNumber, roomNumber, hasProjector); // новая аудитория
+                    auditoriumList.Add(newAuditorium); // добавляем новую аудиторию в список
                     break;
                 case 2:
-                    Console.Write("Введите минимальное количество мест: ");
-                    minSeats = Convert.ToInt32(Console.ReadLine());
-                    Auds.ListAuditoriumsBySeats(minSeats);
+                    foreach(Auditorium auditorium in auditoriumList)
+                    {
+                        if(auditorium.IsHasProjector() == true)
+                      {
+                        auditorium.ShowInfo();
+                      }
+                    }
                     break;
             }
         }
@@ -88,10 +99,11 @@ class Menu // обьект Меню
 
 class Program 
 {
-  static void Main() 
+  public static void Main () 
   {
-        Auditoriums Auds = new Auditoriums(); // создаем обьект Аудитории
-        Menu menu = new Menu(); // создаем Меню
-        menu.ShowMenu(Auds); // Вызываем меню для выбранного обьекта Аудитории
+    List<Auditorium> auditoriumList = new List<Auditorium>();
+    Menu menu = new Menu();
+    menu.ShowMenu(auditoriumList);
   }
+  
 }
