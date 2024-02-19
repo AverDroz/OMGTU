@@ -1,21 +1,21 @@
 using System;
 using System.Collections.Generic;
 
-class Auditorium // обьект Аудитория
+class Auditoriums // обьект Аудитории
 {
-    public int Seats { get; set; } // Места
-    public int FloorNumber { get; set; } // Этаж
-    public int RoomNumber { get; set; } // Номер
-    /*
-     и остальные параметры
-    */
-}
-
-class Menu // обьект Меню
-{
+    class Auditorium // обьект Аудитория
+    {
+        public int Seats { get; set; } // Места
+        public int FloorNumber { get; set; } // Этаж
+        public int RoomNumber { get; set; } // Номер
+        /*
+         и остальные параметры
+        */
+    }
+    
     private List<Auditorium> auditoriums; // список всех аудиторий
     
-    public Menu() // конструктор класса Menu
+    public Auditoriums() // конструктор класса Auditoriums
     {
         auditoriums = new List<Auditorium>(); // инициализация списка аудиторий 
     }
@@ -45,8 +45,20 @@ class Menu // обьект Меню
             }
         }
     }
+     /*
+    и остальные необходимые методы
+    */
+}
+
+class Menu // обьект Меню
+{
     
-    public void ShowMenu() // метод показать меню
+    public Menu() // конструктор класса Menu
+    {
+        
+    }
+    
+    public void ShowMenu(Auditoriums Auds) // метод показать меню
     {
         int choice;
         int minSeats;
@@ -62,28 +74,24 @@ class Menu // обьект Меню
             switch (choice)
             {
                 case 1:
-                    AddAuditorium();
+                    Auds.AddAuditorium();
                     break;
                 case 2:
                     Console.Write("Введите минимальное количество мест: ");
                     minSeats = Convert.ToInt32(Console.ReadLine());
-                    ListAuditoriumsBySeats(minSeats);
+                    Auds.ListAuditoriumsBySeats(minSeats);
                     break;
             }
         }
     }
-    
-    /*
-    и остальные необходимые методы
-    */
-    
 }
 
 class Program 
 {
   static void Main() 
   {
-        Menu menu = new Menu(); // создаем обьект класса Menu с именем menu через конструктор класса Menu().
-        menu.ShowMenu(); // вызываем метод обьекта menu 
+        Auditoriums Auds = new Auditoriums(); // создаем обьект Аудитории
+        Menu menu = new Menu(); // создаем Меню
+        menu.ShowMenu(Auds); // Вызываем меню для выбранного обьекта Аудитории
   }
 }
